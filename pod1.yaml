@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chait
+  namespace: test-ns
+spec:
+  containers:
+    - name: con
+      image: chaitu1812/chat
+      ports:
+       - containerPort: 8080  

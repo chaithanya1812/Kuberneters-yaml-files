@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: newreplicaset1
+  namespace: test-ns
+spec:
+  replicas: 2
+  selector:
+   matchLabels:
+     app: ram
+  template:
+    metadata:
+      labels:
+        app: ram
+    spec:
+       containers:
+         - name: chatcontainer
+           image: chaitu1812/movieapp
+           ports:
+           e- containerPort: 8080
+

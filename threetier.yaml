@@ -1,0 +1,130 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-end
+  namespace: test-cs
+spec: 
+  replicas: 2
+  selector:
+   matchLabels:
+    name: frontend
+  template:
+    metadata:
+     labels:
+       name: frontend
+    spec:
+      containers:
+      - name: frontendcon
+        image: chaitu1812/springboot:v2.0
+        ports:
+        - containerPort: 8080  
+        env:
+         - name: MONGO_DB_HOSTNAME
+           value: backtservice
+         - name: MONGO_DB_USERNAME
+           value: chaitu123
+         - name: MONGO_DB_PASSWORD
+           value: chaitu@1812
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: frontservice
+ namespace: test-cs
+spec:
+ type: NodePort
+ selector:
+  name: frontend
+ ports:
+ - port: 8081
+   targetPort: 8080
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: back-end
+  namespace: test-cs
+spec:
+  selector:
+   matchLabels:
+    name: backend
+  template:
+    metadata: 
+     labels: 
+       name: backend
+    spec:
+     nodeSelector:     
+       chaitu: "geetha" 
+     containers:
+     - name: mongodb
+       image: mongo
+       ports:
+       - containerPort: 27017
+       env:
+       - name: MONGO_INITDB_ROOT_USERNAME
+         value: chaitu123
+       - name: MONGO_INITDB_ROOT_PASSWORD
+         value: chaitu@1812
+       volumeMounts:  
+       -  name: databasevolume
+          mountPath: /data/db
+     volumes:    
+     - name: databasevolume
+       nfs:
+         server: 172.31.33.68
+         path: /nfs/nfs_backup  
+                    
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: backtservice
+ namespace: test-cs
+spec:
+ type: ClusterIP
+ selector:
+  name: backend
+ ports:
+ - port: 27017 
+   targetPort: 27017
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

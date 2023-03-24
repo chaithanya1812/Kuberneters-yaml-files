@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: chaituvol
+ namespace: test-cs
+spec:
+ resources:
+  requests:
+   storage: 4Gi
+ accessModes:
+  - ReadWriteMany 

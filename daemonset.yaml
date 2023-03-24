@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: chatdaemon
+  namespace: test-ns  
+spec:
+ selector:
+   matchLabels:
+    app: ramcharan
+ template:
+   metadata:
+     name: daemonchat
+     labels:
+        app: ramcharan
+   spec:  
+      containers:  
+       - name: chatcon
+         image: chaitu1812/chat
+         ports:
+          - containerPort: 8080 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatdaemon
+  namespace: test-ns
+spec:
+ type: NodePort
+ selector: 
+  app: ramcharan
+ ports:
+   - port: 8081
+     targetPort: 8080   
+     
